@@ -1,0 +1,23 @@
+{% extends "commander/base.html" %}
+{% block title %}Personnel{% endblock %}
+{% block subtitle %}Register, deactivate and manage station officers{% endblock %}
+
+{% block content %}
+<section class="cmd-card">
+  <div class="cmd-card-head">
+    <h2>Personnel</h2>
+    <div class="cmd-card-actions">
+      <button class="btn ghost" id="usersRefreshBtn">Refresh</button>
+      <a class="btn primary"
+         href="{{ url_for('commander_register') }}?token={{ token }}">
+        + Register Officer
+      </a>
+    </div>
+  </div>
+  <div id="usersList" class="list"></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/commander.js') }}"></script>
+{% endblock %}

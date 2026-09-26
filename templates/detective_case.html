@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{ case.cas_number }} — Detective Workbench</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body data-page="detective-case">
+
+<header class="topbar">
+  <div class="brand">
+    <div class="badge">SAPS</div>
+    <div>
+      <h1>{{ case.cas_number }}</h1>
+      <p class="sub">{{ case.crime_type }} · {{ case.location }}</p>
+    </div>
+  </div>
+  <div class="session">
+    <a class="btn ghost" id="backToList" href="#">← Back to list</a>
+    <a class="btn ghost" id="printDocket" href="#" target="_blank">Print docket</a>
+    <span>{{ user.full_name }} · {{ user.persal_number }}</span>
+    <button id="logoutBtn" class="btn ghost">Sign out</button>
+  </div>
+</header>
+
+<main class="narrow-wide">
+
+  <!-- Case header card -->
+  <section class="card case-head">
+    <div class="case-head-top">
+      <div>
+        <div class="case-cas">{{ case.cas_number }}</div>
+        <div class="case-crime">{{ case.crime_type }}</div>
+      </div>
+      <span class="case-status status-{{ case.status|lower|replace(' ', '-') }}">
+        {{ case.status }}
+      </span>
+    </div>
+    <div class="case-meta">
+      <div><div class="k">Complainant</div><div class="v">{{ case.complainant_name }}</div></div>
+      <div><div class="k">SA ID</div><div class="v">{{ case.complainant_id }}</div></div>
+      <div><div class="k">Phone</div><div class="v">{{ case.complainant_phone }}</div></div>
+      <div><div class="k">Email</div><div class="v small">{{ case.complainant_email or "—" }}</div></div>
+      <div><div class="k">Location</div><div class="v small">{{ case.location }}</div></div>
+      <div><div class="k">Opened</div><div class="v small">{{ case.created_at[:10] }}</div></div>
+    </div>
+    <div class="case-desc">
+      <div class="k">Description</div>
+      <p>{{ case.description }}</p>
+    </div>
+  </section>
+
+  <!-- Status -->
+  <section class="card">
+    <h3>Update status</h3>
+    <div class="row-flex">
+      <select id="statusSelect" class="search-select" style="min-width:220px">
+        {% for s in statuses %}
+          <option value="{{ s }}" {% if s == case.status %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn primary" id="saveStatusBtn">Save status</button>
+      <span id="statusMsg" class="inline-msg"></span>
+    </div>
+  </section>
+
+  <!-- Milestone -->
+  <section class="card">
+    <h3>Post milestone</h3>
+    <div class="grid two">
+      <label>Title<input id="msTitle" /></label>
+      <label>Detail<input id="msDetail" /></label>
+    </div>
+    <button class="btn primary" id="addMilestoneBtn">Post milestone</button>
+    <div id="msResult" class="result"></div>
+  </section>
+
+  <!-- Evidence -->
+  <section class="card">
+    <h3>Upload evidence</h3>
+    <div class="row-flex">
+      <input type="file" id="evFile" />
+      <button class="btn primary" id="uploadEvidenceBtn">Upload</button>
+    </div>
+    <div id="evResult" class="result"></div>
+
+    <div class="list" id="evidenceList"></div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="card">
+    <h3>Case timeline</h3>
+    <div class="list" id="timelineList"></div>
+  </section>
+
+</main>
+
+<footer class="foot">SAPS eDMS · Case view · All actions are audited</footer>
+
+<script id="caseData" type="application/json">{{ case|tojson|safe }}</script>
+<script>
+  window.SAPS_TOKEN = "{{ token }}";
+  window.SAPS_CASE = JSON.parse(document.getElementById("caseData").textContent);
+  (function () {
+    var t = "{{ token }}";
+    var link = document.getElementById("printDocket");
+    if (link) {
+      link.href = "/case/" + window.SAPS_CASE.id + "/print?token=" + encodeURIComponent(t);
+    }
+  })();
+</script>
+<script src="{{ url_for('static', filename='js/app-core.js') }}"></script>
+<script src="{{ url_for('static', filename='js/detective_case.js') }}"></script>
+</body>
+</html>

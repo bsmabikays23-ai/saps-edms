@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Detective Workbench — SAPS eDMS</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body data-page="detective">
+
+<header class="topbar">
+  <div class="brand">
+    <div class="badge">SAPS</div>
+    <div>
+      <h1>Detective Workbench</h1>
+      <p class="sub">Assigned dockets · open a case to work on it</p>
+    </div>
+  </div>
+  <div class="session">
+    <span>{{ user.full_name }} · {{ user.persal_number }} · {{ user.station }}</span>
+    <a class="btn ghost" id="profileLink" href="#">My Profile</a>
+    <button id="logoutBtn" class="btn ghost">Sign out</button>
+  </div>
+</header>
+
+<main>
+
+  <section class="card">
+    <h3>My dockets</h3>
+
+    <div class="search-bar">
+      <input id="searchText" class="search-input"
+             placeholder="Search by CAS, name, ID, phone, email, location…" />
+
+      <select id="filterCrime" class="search-select">
+        <option value="">All crime types</option>
+        {% for t in crime_types %}<option value="{{ t }}">{{ t }}</option>{% endfor %}
+      </select>
+
+      <select id="filterStatus" class="search-select">
+        <option value="All">All statuses</option>
+        {% for s in statuses %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+      </select>
+
+      <input id="filterDateFrom" class="search-date" type="date" title="From date" />
+      <input id="filterDateTo"   class="search-date" type="date" title="To date" />
+
+      <button class="btn ghost" id="clearSearch">Clear</button>
+    </div>
+
+    <div class="list" id="detList"></div>
+    <div class="list-count" id="detCount"></div>
+  </section>
+
+</main>
+
+<footer class="foot">SAPS eDMS · Detective workbench · All actions are audited</footer>
+
+<script src="{{ url_for('static', filename='js/app-core.js') }}"></script>
+<script>window.SAPS_TOKEN = "{{ token }}";</script>
+<script src="{{ url_for('static', filename='js/detective.js') }}"></script>
+</body>
+</html>

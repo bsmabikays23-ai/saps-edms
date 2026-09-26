@@ -1,0 +1,99 @@
+{% extends "commander/base.html" %}
+{% block title %}Register Officer{% endblock %}
+{% block subtitle %}Create a new officer account on this station{% endblock %}
+
+{% block content %}
+<section class="cmd-card">
+  <div class="cmd-card-head">
+    <h2>Register new officer</h2>
+  </div>
+
+  <div class="cmd-form-grid">
+    <label class="cmd-field">
+      <span>PERSAL / Student Number</span>
+      <input id="uPersal" type="text" maxlength="8" autocomplete="off" />
+    </label>
+
+    <label class="cmd-field">
+      <span>Full Name</span>
+      <input id="uName" type="text" />
+    </label>
+
+    <label class="cmd-field">
+      <span>Temporary Password</span>
+      <input id="uPass" type="password" />
+    </label>
+
+    <label class="cmd-field">
+      <span>Role (System Access)</span>
+      <select id="uRole">
+        <option value="">— Select a role —</option>
+        <option value="csc">CSC Desk Officer</option>
+        <option value="detective">Detective</option>
+      </select>
+    </label>
+
+    <label class="cmd-field">
+      <span>Rank</span>
+      <select id="uRank">
+        <option value="">— Select rank —</option>
+        <optgroup label="Enlisted Ranks">
+          <option value="Constable">Constable</option>
+          <option value="Sergeant">Sergeant</option>
+          <option value="Warrant Officer">Warrant Officer</option>
+          <option value="Senior Warrant Officer">Senior Warrant Officer</option>
+          <option value="Chief Warrant Officer">Chief Warrant Officer</option>
+        </optgroup>
+        <optgroup label="Commissioned Officers">
+          <option value="Lieutenant">Lieutenant</option>
+          <option value="Captain">Captain</option>
+          <option value="Major">Major</option>
+          <option value="Lieutenant Colonel">Lieutenant Colonel</option>
+          <option value="Colonel">Colonel</option>
+          <option value="Brigadier">Brigadier</option>
+          <option value="Major General">Major General</option>
+          <option value="Lieutenant General">Lieutenant General</option>
+          <option value="General">General</option>
+        </optgroup>
+      </select>
+    </label>
+
+    <label class="cmd-field">
+      <span>Station</span>
+      <input id="uStation" type="text" value="Central SAPS" />
+    </label>
+  </div>
+
+  <!-- Rank / Role mismatch warning -->
+  <div id="rankWarning" class="rank-warning hidden" role="alert">
+    <div class="rank-warning-head">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        <path d="M12 9v4M12 17h.01"/>
+      </svg>
+      <span>Unusual rank for this role</span>
+    </div>
+    <p id="rankWarningText"></p>
+    <label class="rank-warning-confirm">
+      <input type="checkbox" id="confirmMismatch" />
+      <span>I understand — create this account anyway.</span>
+    </label>
+  </div>
+
+  <div class="cmd-form-actions">
+    <button class="btn primary" id="createUserBtn">Create account</button>
+    <a class="btn ghost"
+       href="{{ url_for('commander_personnel') }}?token={{ token }}">
+      Back to personnel
+    </a>
+  </div>
+
+  <div id="userResult" class="result"></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/commander.js') }}"></script>
+{% endblock %}

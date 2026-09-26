@@ -1,0 +1,62 @@
+{% extends "commander/base.html" %}
+{% block title %}Overview{% endblock %}
+{% block subtitle %}Station statistics and detective workload{% endblock %}
+
+{% block content %}
+<section class="cmd-card">
+  <div class="cmd-card-head">
+    <h2>Station statistics</h2>
+    <button class="btn ghost" id="statsRefreshBtn">Refresh</button>
+  </div>
+
+  <div class="stat-grid" id="statGrid">
+    <div class="stat-tile">
+      <div class="stat-k">Total dockets</div>
+      <div class="stat-v" id="statTotal">—</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-k">Open</div>
+      <div class="stat-v stat-open" id="statOpen">—</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-k">Closed</div>
+      <div class="stat-v stat-closed" id="statClosed">—</div>
+    </div>
+  </div>
+</section>
+
+<section class="cmd-card">
+  <div class="cmd-card-head">
+    <h2>Trends &amp; breakdown</h2>
+    <button class="btn ghost" id="chartsRefreshBtn">Refresh</button>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3 class="chart-title">Cases per month</h3>
+      <div id="chartMonths" class="chart-body"></div>
+    </div>
+
+    <div class="chart-box">
+      <h3 class="chart-title">Cases by crime type</h3>
+      <div id="chartCrime" class="chart-body"></div>
+    </div>
+
+    <div class="chart-box">
+      <h3 class="chart-title">Status breakdown</h3>
+      <div id="chartStatus" class="chart-body"></div>
+    </div>
+  </div>
+</section>
+
+<section class="cmd-card">
+  <div class="cmd-card-head">
+    <h2>Detective workload</h2>
+  </div>
+  <div id="workloadArea" class="list"></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/commander.js') }}"></script>
+{% endblock %}

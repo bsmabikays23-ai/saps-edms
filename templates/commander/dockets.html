@@ -1,0 +1,38 @@
+{% extends "commander/base.html" %}
+{% block title %}Dockets{% endblock %}
+{% block subtitle %}All dockets registered in the system{% endblock %}
+
+{% block content %}
+<section class="cmd-card">
+  <div class="cmd-card-head">
+    <h2>All dockets</h2>
+  </div>
+
+  <div class="search-bar">
+    <input id="searchText" class="search-input"
+           placeholder="Search by CAS, name, ID, phone, email, location…" />
+
+    <select id="filterCrime" class="search-select">
+      <option value="">All crime types</option>
+      {% for t in crime_types %}<option value="{{ t }}">{{ t }}</option>{% endfor %}
+    </select>
+
+    <select id="filterStatus" class="search-select">
+      <option value="All">All statuses</option>
+      {% for s in statuses %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+    </select>
+
+    <input id="filterDateFrom" class="search-date" type="date" title="From date" />
+    <input id="filterDateTo"   class="search-date" type="date" title="To date" />
+
+    <button class="btn ghost" id="clearSearch">Clear</button>
+  </div>
+
+  <div id="docketsList" class="list"></div>
+  <div class="list-count" id="docketsCount"></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/commander.js') }}"></script>
+{% endblock %}

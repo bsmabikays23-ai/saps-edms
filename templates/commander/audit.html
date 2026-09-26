@@ -1,0 +1,23 @@
+{% extends "commander/base.html" %}
+{% block title %}Audit Trail{% endblock %}
+{% block subtitle %}Immutable log of every system action{% endblock %}
+
+{% block content %}
+<section class="cmd-card">
+  <div class="cmd-card-head">
+    <h2>Audit trail</h2>
+    <div class="cmd-card-actions">
+      <button class="btn ghost" id="auditRefreshBtn">Refresh</button>
+    </div>
+  </div>
+  <p class="cmd-muted">
+    Every login, docket creation, milestone, evidence upload, user change and
+    public lookup is recorded here. Entries are append-only.
+  </p>
+  <div id="auditList" class="list"></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/commander.js') }}"></script>
+{% endblock %}

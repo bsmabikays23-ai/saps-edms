@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="SAPS eDMS — Legal framework, complainant rights and officer authentication" />
+<title>Legal Framework &amp; Officer Authentication — SAPS eDMS</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+</head>
+<body>
+
+<!-- Top nav — small utility bar -->
+<nav class="topnav">
+  <a class="topnav-link" href="{{ url_for('index') }}">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>
+    </svg>
+    Home
+  </a>
+  <a class="topnav-link" href="{{ url_for('track_page') }}">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="7"/>
+      <path d="M21 21l-4.35-4.35"/>
+    </svg>
+    Track a docket
+  </a>
+</nav>
+
+<!-- ==================================================================
+     HERO: Legal, regulatory and rights section
+     ================================================================== -->
+<section class="legal-hero">
+  <div class="legal-hero-inner">
+
+    <div class="emblem">
+      <img src="{{ url_for('static', filename='saps_badge.jpg') }}"
+           alt="South African Police Service Badge"
+           class="saps-badge" />
+      <div class="emblem-text">
+        <h1>South African Police Service</h1>
+        <p>SAPS · Electronic Docket Management</p>
+      </div>
+    </div>
+
+    <div class="hero-title">
+      <span class="hero-kicker">
+        <span class="dot ok"></span>
+        Legal Framework &amp; Complainant Rights
+      </span>
+      <h2>Electronic Docket <span>Management System</span></h2>
+      <p class="sub">
+        Restricted system · Authorised SAPS personnel and registered complainants only.
+        All access and actions are logged.
+      </p>
+    </div>
+
+    <div class="status-strip" aria-live="polite">
+      <div class="row">
+        <span><span class="dot ok"></span>Session Encrypted</span>
+        <b>SHA-256 / TLS</b>
+      </div>
+      <div class="row">
+        <span><span class="dot warn"></span>Audit Trail</span>
+        <b>ACTIVE</b>
+      </div>
+      <div class="row">
+        <span>Local Time (SAST)</span>
+        <b id="liveClock">--:--:--</b>
+      </div>
+      <div class="row">
+        <span>Terminal IP</span>
+        <b id="clientIp">—</b>
+      </div>
+    </div>
+
+    <h3 class="legal-heading">Statutory Framework Governing This System</h3>
+
+    <div class="legal-grid">
+
+      <article class="legal-block">
+        <strong>SAPS National Instruction 3 of 2011</strong>
+        Mandates the mandatory registration of every reported crime. Officers
+        are strictly prohibited from unlawfully refusing to open a docket or
+        from discouraging a complainant from laying a charge. Every complaint
+        presented at a police station must be recorded and issued a case
+        reference number.
+      </article>
+
+      <article class="legal-block">
+        <strong>Section 205 — Constitution of the Republic of South Africa (Act 108 of 1996)</strong>
+        Establishes the constitutional mandate of the South African Police
+        Service to prevent, combat and investigate crime; to maintain public
+        order; to protect and secure the inhabitants of the Republic and their
+        property; and to uphold and enforce the law.
+      </article>
+
+      <article class="legal-block">
+        <strong>Protection of Personal Information Act (POPIA) 4 of 2013</strong>
+        Regulates the lawful collection, handling, processing and protection of
+        personal data — including confidential victim statements. Personal
+        information on this system is processed strictly for lawful policing
+        purposes, with minimality, confidentiality and data-subject rights
+        preserved under POPIA.
+      </article>
+
+      <article class="legal-block cyber">
+        <strong>Cybercrimes Act 19 of 2020 — Warning</strong>
+        Establishes severe legal penalties for unauthorised system access, data
+        tampering, interception, interference or unauthorised disclosure of
+        official government records. Offenders are liable for prosecution and
+        penalties including imprisonment.
+      </article>
+
+      <article class="legal-block rights">
+        <strong>Victim Empowerment Programme &amp; SAPS Service Charter</strong>
+        Outlines the statutory rights of complainants, including the right to be
+        treated with dignity and respect; to receive an official case reference
+        number; to be kept informed of investigation progress; to be protected
+        from secondary victimisation; and to access victim-support services.
+      </article>
+
+      <article class="legal-block rights">
+        <strong>Complainant Rights — Service Charter Summary</strong>
+        <ul>
+          <li>Right to a case reference (CAS) number.</li>
+          <li>Right to be informed of case progression.</li>
+          <li>Right to professional, impartial service.</li>
+          <li>Right to confidentiality of personal information.</li>
+          <li>Right to be treated with dignity at all times.</li>
+        </ul>
+      </article>
+
+    </div>
+
+    <!-- Public tracking CTA -->
+    <a class="public-cta" href="{{ url_for('track_page') }}"
+       aria-label="Track a docket — public case tracking">
+      <span class="public-cta-glow" aria-hidden="true"></span>
+
+      <span class="public-cta-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+             stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="M21 21l-4.35-4.35"/>
+          <path d="M8 11h6M11 8v6"/>
+        </svg>
+      </span>
+
+      <span class="public-cta-text">
+        <span class="public-cta-kicker">
+          <span class="live-dot" aria-hidden="true"></span>
+          Live · No login required
+        </span>
+        <span class="public-cta-title">Track a docket publicly</span>
+        <span class="public-cta-sub">
+          Enter your CAS number and SA ID or phone to see every update since registration.
+        </span>
+      </span>
+
+      <span class="public-cta-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+             stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 5l7 7-7 7"/>
+        </svg>
+      </span>
+    </a>
+
+    <div class="scroll-hint" aria-hidden="true">
+      <span>Officer login below</span>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+           stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================================================================
+     AUTH SECTION: Officer login (below the fold)
+     ================================================================== -->
+<section class="auth-section" id="officerLogin">
+  <div class="auth-section-inner">
+
+    <header class="auth-head">
+      <span class="auth-kicker">Authorised Personnel Only</span>
+      <h2>Officer Authentication</h2>
+      <p>
+        Sign in with your PERSAL number and service password.
+        All sign-in attempts are recorded in the audit log.
+      </p>
+    </header>
+
+    <section class="card" aria-labelledby="authHeading">
+      <form id="officerForm" novalidate autocomplete="on">
+
+        <label class="field" id="fieldPersal">
+          <span>PERSAL Number</span>
+          <input type="text"
+                 id="persalNumber"
+                 name="persal_number"
+                 inputmode="text"
+                 pattern="[A-Za-z0-9]{2,8}"
+                 maxlength="8"
+                 placeholder="e.g. CMD001"
+                 autocomplete="username"
+                 required
+                 aria-describedby="persalHint persalError" />
+          <span class="hint" id="persalHint">Officer identifier — 2 to 8 letters and/or digits.</span>
+          <span class="error" id="persalError">Enter 2–8 letters or digits.</span>
+        </label>
+
+        <label class="field" id="fieldPassword">
+          <span>Password / Passcode</span>
+          <div class="pw-wrap">
+            <input type="password"
+                   id="officerPassword"
+                   name="password"
+                   placeholder="••••••••"
+                   autocomplete="current-password"
+                   required
+                   aria-describedby="pwError" />
+            <button type="button" class="pw-toggle" id="pwToggle"
+                    aria-label="Show password" aria-pressed="false">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <span class="error" id="pwError">Password is required.</span>
+        </label>
+
+        <button type="submit" class="btn primary" id="officerSubmit">
+          Authenticate
+        </button>
+
+        <div class="result" id="officerResult" role="alert"></div>
+      </form>
+
+      <div class="badges" aria-label="System security indicators">
+        <span class="chip">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 1l9 4v6c0 5.25-3.4 10.4-9 12-5.6-1.6-9-6.75-9-12V5z"/>
+          </svg>
+          SHA-256 Encrypted
+        </span>
+        <span class="chip popia">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+          POPIA Compliant
+        </span>
+        <span class="chip audit">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 7v5l3 2"/>
+          </svg>
+          Audit Logging Active
+        </span>
+      </div>
+    </section>
+
+    <a class="back-to-top" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+      ↑ Back to legal framework
+    </a>
+
+  </div>
+</section>
+
+<footer class="foot">SAPS eDMS · Restricted system · All actions are audited</footer>
+
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>
