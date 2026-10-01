@@ -1,0 +1,22 @@
+{% extends "commander/base.html" %}
+{% block title %}Approvals{% endblock %}
+{% block subtitle %}Review and approve docket allocations{% endblock %}
+
+{% block content %}
+<section class="cmd-card">
+  <div class="cmd-card-head">
+    <h2>Awaiting approval</h2>
+    <button class="btn ghost" id="approvalsRefreshBtn">Refresh</button>
+  </div>
+  <p class="cmd-muted">
+    Dockets classified as Priority, or where no detective was available in the
+    recommended unit, appear here. Approve to accept the assignment, or reassign
+    to a different officer.
+  </p>
+  <div id="approvalsList" class="list"></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/commander.js') }}"></script>
+{% endblock %}

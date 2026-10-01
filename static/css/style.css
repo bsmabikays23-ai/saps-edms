@@ -1,3 +1,181 @@
+/* ==========================================================================
+   Legal grounds (opening a docket)
+   ========================================================================== */
+
+.legal-grounds {
+  background: rgba(212,175,55,.05);
+  border: 1px solid rgba(212,175,55,.3);
+  border-left: 4px solid var(--saps-gold);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+.legal-grounds-head {
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--saps-gold);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.check-pill.wide {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  background: rgba(5,15,31,.55);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  width: 100%;
+}
+.check-pill.wide:hover { border-color: var(--saps-gold); }
+.check-pill.wide input[type="checkbox"] {
+  width: auto;
+  margin: 3px 0 0;
+  accent-color: var(--saps-gold);
+  flex-shrink: 0;
+}
+.check-pill.wide span { flex: 1; color: var(--ink); }
+.check-pill.wide b { display: block; font-size: 13.5px; margin-bottom: 3px; }
+.check-pill.wide small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 400; }
+
+
+
+/* ==========================================================================
+   Classification UI
+   ========================================================================== */
+
+.tier-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+.tier-badge.tier-pending {
+  color: var(--muted);
+  background: rgba(159,176,201,.08);
+}
+.tier-badge.tier-light-routine {
+  color: var(--ok);
+  background: rgba(91,214,138,.08);
+}
+.tier-badge.tier-small-standard {
+  color: var(--saps-gold);
+  background: rgba(212,175,55,.08);
+}
+.tier-badge.tier-serious-complex {
+  color: #f5a623;
+  background: rgba(245,166,35,.08);
+}
+.tier-badge.tier-priority-highly-complex {
+  color: var(--danger);
+  background: rgba(224,107,92,.08);
+}
+
+.classification-panel {
+  border-left: 4px solid var(--saps-gold);
+}
+.classification-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.classification-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.classification-meta .k {
+  font-size: 10.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.classification-meta .v {
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 600;
+}
+.classification-meta .v.small { font-size: 13px; font-weight: 400; }
+
+.classification-reasons .k {
+  font-size: 10.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.classification-reasons ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.classification-reasons li { margin-bottom: 4px; }
+
+/* Weapons checkboxes on the CSC form */
+.checkbox-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+  margin-bottom: 14px;
+}
+.check-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #0a1c33;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12.5px;
+  color: var(--ink);
+  cursor: pointer;
+  margin: 0;
+  transition: border-color .15s, background .15s;
+}
+.check-pill:hover { border-color: var(--saps-gold); }
+.check-pill input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  accent-color: var(--saps-gold);
+}
+.check-pill input:checked + text,
+.check-pill:has(input:checked) {
+  border-color: var(--saps-gold);
+  background: rgba(212,175,55,.08);
+  color: var(--saps-gold);
+}
+
+.verify-btn {
+  background: var(--saps-gold) !important;
+  color: #0b1f3a !important;
+  border-color: var(--saps-gold) !important;
+  font-weight: 800 !important;
+}
+.verify-btn:hover {
+  background: var(--saps-gold-2) !important;
+}
+
 :root {
   --saps-navy: #0b1f3a;
   --saps-navy-2: #12294d;
@@ -489,3 +667,30 @@ input:focus, select:focus, textarea:focus {
   font-size: 13px;
   line-height: 36px;
 }
+
+.section-sub {
+  font-size: 11.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--saps-gold);
+  font-weight: 700;
+  margin: 22px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.jurisdiction-hint {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  border-left: 4px solid #fbbf24;
+  border-radius: 8px;
+  color: #f7e5b0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.jurisdiction-hint.hidden { display: none; }
+
+.hidden { display: none !important; }

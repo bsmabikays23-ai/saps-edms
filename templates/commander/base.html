@@ -7,73 +7,58 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/commander.css') }}" />
 </head>
-<body data-page="commander">
+<body data-page="commander" data-role="{{ user.role }}">
 
 <header class="topbar">
   <div class="brand">
     <div class="badge">SAPS</div>
     <div>
-      <h1>Branch Command / Admin</h1>
+      <h1>{% if user.role == 'admin' %}System Administrator{% else %}Branch Command{% endif %}</h1>
       <p class="sub">{% block subtitle %}Station oversight console{% endblock %}</p>
     </div>
   </div>
   <div class="session">
     <span>{{ user.full_name }} · {{ user.persal_number }} · {{ user.station }}</span>
+    <a class="btn ghost" id="profileLink" href="#">My Profile</a>
     <button id="logoutBtn" class="btn ghost">Sign out</button>
   </div>
 </header>
 
-<nav class="cmd-nav" aria-label="Commander navigation">
+<nav class="cmd-nav" aria-label="Command navigation">
   <div class="cmd-nav-inner">
+    {% if user.role == 'commander' %}
     <a href="{{ url_for('commander_overview') }}?token={{ token }}"
        class="cmd-link {% if active == 'overview' %}active{% endif %}">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <rect x="3" y="3" width="7" height="9" rx="1"/>
-        <rect x="14" y="3" width="7" height="5" rx="1"/>
-        <rect x="14" y="12" width="7" height="9" rx="1"/>
-        <rect x="3" y="16" width="7" height="5" rx="1"/>
-      </svg>
       Overview
     </a>
-    <a href="{{ url_for('commander_personnel') }}?token={{ token }}"
-       class="cmd-link {% if active == 'personnel' %}active{% endif %}">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
-      Personnel
-    </a>
-    <a href="{{ url_for('commander_register') }}?token={{ token }}"
-       class="cmd-link {% if active == 'register' %}active{% endif %}">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 8v8M8 12h8"/>
-      </svg>
-      Register Officer
+    <a href="{{ url_for('commander_approvals') }}?token={{ token }}"
+       class="cmd-link {% if active == 'approvals' %}active{% endif %}">
+      Approvals
     </a>
     <a href="{{ url_for('commander_dockets') }}?token={{ token }}"
        class="cmd-link {% if active == 'dockets' %}active{% endif %}">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-        <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-      </svg>
       Dockets
     </a>
     <a href="{{ url_for('commander_audit') }}?token={{ token }}"
        class="cmd-link {% if active == 'audit' %}active{% endif %}">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 6v6l4 2"/>
-      </svg>
       Audit Trail
     </a>
+    {% endif %}
+
+    {% if user.role == 'admin' %}
+    <a href="{{ url_for('commander_personnel') }}?token={{ token }}"
+       class="cmd-link {% if active == 'personnel' %}active{% endif %}">
+      Personnel
+    </a>
+    <a href="{{ url_for('commander_register') }}?token={{ token }}"
+       class="cmd-link {% if active == 'register' %}active{% endif %}">
+      Register Officer
+    </a>
+    <a href="{{ url_for('commander_audit') }}?token={{ token }}"
+       class="cmd-link {% if active == 'audit' %}active{% endif %}">
+      Audit Trail
+    </a>
+    {% endif %}
   </div>
 </nav>
 

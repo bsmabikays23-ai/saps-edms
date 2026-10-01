@@ -28,9 +28,58 @@
   <section class="card">
     <h3>Register new docket</h3>
     <p class="hint">
-      All fields are required. The complainant's email address will receive
-      the case number and docket details.
+      A docket can only be opened if at least one legal ground is present
+      (Section 205, NI 3/2011). Fields marked <strong>★</strong> help the
+      classification engine decide the unit.
     </p>
+
+    <!-- LEGAL GROUNDS -->
+    <div class="legal-grounds">
+      <div class="legal-grounds-head">Reason for opening this docket</div>
+
+      <div class="grid two">
+        <label>Why is this docket being opened?
+          <select id="cReason">
+            <option value="">— Select a reason —</option>
+            <option value="complainant">Complainant is laying a charge</option>
+            <option value="arrest">Suspect arrested / officer on scene</option>
+            <option value="court">Court or DPP order received</option>
+            <option value="followup">Follow-up to a previous complaint</option>
+            <option value="referred">Referred by another station</option>
+          </select>
+        </label>
+
+        <label>Where did the crime happen?
+          <select id="cIncidentStation">
+            <option value="">— Select a station —</option>
+            <option value="Central SAPS">Central SAPS</option>
+            <option value="Durban Central SAPS">Durban Central SAPS</option>
+            <option value="Cape Town Central SAPS">Cape Town Central SAPS</option>
+            <option value="Johannesburg Central SAPS">Johannesburg Central SAPS</option>
+            <option value="KZN Provincial HQ">KZN Provincial HQ</option>
+            <option value="Gauteng Provincial HQ">Gauteng Provincial HQ</option>
+            <option value="Eastern Cape Provincial HQ">Eastern Cape Provincial HQ</option>
+            <option value="Free State Provincial HQ">Free State Provincial HQ</option>
+            <option value="Limpopo Provincial HQ">Limpopo Provincial HQ</option>
+            <option value="Mpumalanga Provincial HQ">Mpumalanga Provincial HQ</option>
+            <option value="North West Provincial HQ">North West Provincial HQ</option>
+            <option value="Northern Cape Provincial HQ">Northern Cape Provincial HQ</option>
+            <option value="Western Cape Provincial HQ">Western Cape Provincial HQ</option>
+            <option value="Other — outside SAPS jurisdiction">Other — outside SAPS jurisdiction</option>
+          </select>
+        </label>
+      </div>
+
+      <label id="followupRefWrap" class="hidden">
+        Reference of previous complaint (optional)
+        <input id="swornRef" type="text" placeholder="e.g. CAS 001/09/2026" />
+      </label>
+
+      <div id="jurisdictionHint" class="jurisdiction-hint hidden">
+        The crime happened outside your station's area. After verification,
+        the commander will transfer this docket to the correct station.
+      </div>
+    </div>
 
     <div class="grid two">
       <label>Complainant full name<input id="cName" /></label>
@@ -42,10 +91,28 @@
           {% for t in crime_types %}<option>{{ t }}</option>{% endfor %}
         </select>
       </label>
-      <label>Location<input id="cLocation" /></label>
+      <label>Location (street / address)<input id="cLocation" /></label>
+      <label>★ Estimated financial value (R)
+        <input id="cValue" type="number" min="0" step="0.01" placeholder="0" />
+      </label>
+      <label>★ Number of suspects
+        <input id="cSuspects" type="number" min="0" step="1" placeholder="0" />
+      </label>
     </div>
+
+    <label>★ Weapons involved</label>
+    <div class="checkbox-grid" id="weaponsGroup">
+      <label class="check-pill"><input type="checkbox" value="Firearm" /> Firearm</label>
+      <label class="check-pill"><input type="checkbox" value="Knife" /> Knife</label>
+      <label class="check-pill"><input type="checkbox" value="Machete/Panga" /> Machete/Panga</label>
+      <label class="check-pill"><input type="checkbox" value="Blunt object" /> Blunt object</label>
+      <label class="check-pill"><input type="checkbox" value="Other weapon" /> Other weapon</label>
+      <label class="check-pill"><input type="checkbox" value="None" /> None</label>
+    </div>
+
     <label>Description<textarea id="cDesc" rows="3"></textarea></label>
-    <button class="btn primary" id="createCaseBtn">Log docket &amp; auto-assign detective</button>
+
+    <button class="btn primary" id="createCaseBtn">Log docket</button>
     <div id="cscResult" class="result"></div>
   </section>
 
@@ -66,6 +133,19 @@
         {% for s in statuses %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
       </select>
 
+      <select id="filterTier" class="search-select">
+        <option value="All">All tiers</option>
+        {% for t in tiers %}<option value="{{ t }}">{{ t }}</option>{% endfor %}
+      </select>
+
+      <select id="filterDecision" class="search-select">
+        <option value="All">All decisions</option>
+        <option value="Pending">Pending</option>
+        <option value="Approved">Approved</option>
+        <option value="Refused">Refused</option>
+        <option value="Transferred">Transferred</option>
+      </select>
+
       <input id="filterDateFrom" class="search-date" type="date" title="From date" />
       <input id="filterDateTo"   class="search-date" type="date" title="To date" />
 
@@ -81,7 +161,11 @@
 <footer class="foot">SAPS eDMS · CSC workspace · All actions are audited</footer>
 
 <script src="{{ url_for('static', filename='js/app-core.js') }}"></script>
-<script>window.SAPS_TOKEN = "{{ token }}";</script>
+<script>
+  window.SAPS_TOKEN = "{{ token }}";
+  window.SAPS_DECISION_REASONS = {{ decision_reasons|tojson|safe }};
+  window.SAPS_USER_STATION = "{{ user.station }}";
+</script>
 <script src="{{ url_for('static', filename='js/csc.js') }}"></script>
 </body>
 </html>

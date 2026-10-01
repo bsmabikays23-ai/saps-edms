@@ -26,16 +26,18 @@
 
 <main class="narrow-wide">
 
-  <!-- Case header card -->
   <section class="card case-head">
     <div class="case-head-top">
       <div>
         <div class="case-cas">{{ case.cas_number }}</div>
         <div class="case-crime">{{ case.crime_type }}</div>
       </div>
-      <span class="case-status status-{{ case.status|lower|replace(' ', '-') }}">
-        {{ case.status }}
-      </span>
+      <div style="text-align:right;">
+        <span class="case-status status-{{ case.status|lower|replace(' ', '-') }}">{{ case.status }}</span>
+        <div style="margin-top:8px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">
+          {{ case.verification_status }} · {{ case.decision }}
+        </div>
+      </div>
     </div>
     <div class="case-meta">
       <div><div class="k">Complainant</div><div class="v">{{ case.complainant_name }}</div></div>
@@ -49,23 +51,87 @@
       <div class="k">Description</div>
       <p>{{ case.description }}</p>
     </div>
+    <div class="case-desc">
+      <div class="k">Legal grounds</div>
+      <ul style="margin:0;padding-left:18px;">
+        {% if case.ground_sworn_statement %}<li>Sworn statement obtained{% if case.sworn_statement_ref %} — ref {{ case.sworn_statement_ref }}{% endif %}</li>{% endif %}
+        {% if case.ground_officer_present %}<li>Officer on scene / suspect arrested / evidence discovered</li>{% endif %}
+        {% if case.ground_court_order %}<li>Court or DPP order</li>{% endif %}
+      </ul>
+    </div>
   </section>
 
-  <!-- Status -->
+  {% if case.case_tier %}
+  <section class="card classification-panel">
+    <div class="classification-head">
+      <h3 style="margin:0;">Classification &amp; Allocation</h3>
+      <span class="tier-badge tier-{{ case.case_tier|lower|replace(' ', '-')|replace('/', '') }}">
+        {{ case.case_tier }}
+      </span>
+    </div>
+    <div class="classification-meta">
+      <div><div class="k">Assigned unit</div><div class="v">{{ case.assigned_unit or "—" }}</div></div>
+      <div><div class="k">Detective</div><div class="v">{{ case.detective.full_name if case.detective else "Awaiting approval" }}</div></div>
+      <div><div class="k">Approval</div><div class="v small">{{ case.approval_status }}</div></div>
+      {% if case.financial_value %}
+      <div><div class="k">Financial value</div><div class="v small">R {{ "{:,.2f}".format(case.financial_value) }}</div></div>
+      {% endif %}
+      {% if case.num_suspects %}
+      <div><div class="k">Suspects</div><div class="v small">{{ case.num_suspects }}</div></div>
+      {% endif %}
+      {% if case.weapons_involved %}
+      <div><div class="k">Weapons</div><div class="v small">{{ case.weapons_involved | join(", ") }}</div></div>
+      {% endif %}
+    </div>
+    <div class="classification-reasons">
+      <div class="k">Why this classification</div>
+      <ul>
+        {% for reason in case.classification_reasons %}<li>{{ reason }}</li>{% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+
   <section class="card">
     <h3>Update status</h3>
     <div class="row-flex">
       <select id="statusSelect" class="search-select" style="min-width:220px">
         {% for s in statuses %}
+          {% if s != "Closed" %}
           <option value="{{ s }}" {% if s == case.status %}selected{% endif %}>{{ s }}</option>
+          {% endif %}
         {% endfor %}
       </select>
       <button class="btn primary" id="saveStatusBtn">Save status</button>
       <span id="statusMsg" class="inline-msg"></span>
     </div>
+    <p class="hint" style="margin-top:10px;">
+      To close this docket, use the <b>Close Docket</b> action below and provide a legal closure reason.
+    </p>
   </section>
 
-  <!-- Milestone -->
+  <section class="card">
+    <h3>Close docket</h3>
+    <p class="hint">
+      A docket can only be closed with a valid legal outcome
+      (NPA decision, court finalisation, exhausted leads, withdrawn by complainant, or inquest).
+    </p>
+    <label>Closure reason
+      <select id="closureReason" class="search-select" style="min-width:100%">
+        <option value="">— Select a reason —</option>
+        {% for r in closure_reasons %}<option value="{{ r }}">{{ r }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Reference number (optional)
+      <input id="closureRef" type="text" placeholder="e.g. NPA ref, court case number" />
+    </label>
+    <label>Supporting note (optional)
+      <textarea id="closureNote" rows="2"></textarea>
+    </label>
+    <button class="btn primary" id="closeCaseBtn">Close docket</button>
+    <div id="closeResult" class="result"></div>
+  </section>
+
   <section class="card">
     <h3>Post milestone</h3>
     <div class="grid two">
@@ -76,7 +142,6 @@
     <div id="msResult" class="result"></div>
   </section>
 
-  <!-- Evidence -->
   <section class="card">
     <h3>Upload evidence</h3>
     <div class="row-flex">
@@ -84,11 +149,9 @@
       <button class="btn primary" id="uploadEvidenceBtn">Upload</button>
     </div>
     <div id="evResult" class="result"></div>
-
     <div class="list" id="evidenceList"></div>
   </section>
 
-  <!-- Timeline -->
   <section class="card">
     <h3>Case timeline</h3>
     <div class="list" id="timelineList"></div>
@@ -105,9 +168,7 @@
   (function () {
     var t = "{{ token }}";
     var link = document.getElementById("printDocket");
-    if (link) {
-      link.href = "/case/" + window.SAPS_CASE.id + "/print?token=" + encodeURIComponent(t);
-    }
+    if (link) link.href = "/case/" + window.SAPS_CASE.id + "/print?token=" + encodeURIComponent(t);
   })();
 </script>
 <script src="{{ url_for('static', filename='js/app-core.js') }}"></script>

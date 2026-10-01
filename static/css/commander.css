@@ -291,35 +291,165 @@
 
 /* ---- Buttons ----------------------------------------------------------- */
 .cmd-main .btn {
-  padding: 10px 18px;
+  padding: 11px 18px;
   font-size: 13px;
-  font-weight: 600;
-  border-radius: 8px;
-  letter-spacing: .3px;
+  font-weight: 700;
+  border-radius: 10px;
+  letter-spacing: .25px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
   text-decoration: none;
   cursor: pointer;
-  transition: all .15s;
+  border: 1px solid transparent;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+  box-shadow: 0 8px 16px rgba(0,0,0,.12);
+}
+.cmd-main .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px rgba(0,0,0,.18);
+}
+.cmd-main .btn:active {
+  transform: translateY(0);
 }
 .cmd-main .btn.primary {
-  background: linear-gradient(180deg, var(--cmd-gold), #c5a059);
-  color: #0a192f;
-  border: 1px solid var(--cmd-gold);
+  background: linear-gradient(180deg, var(--cmd-gold), #c8a74d);
+  color: #0b1b2c;
+  border-color: rgba(212,175,55,.8);
 }
 .cmd-main .btn.primary:hover {
-  background: linear-gradient(180deg, var(--cmd-gold-2), var(--cmd-gold));
-  transform: translateY(-1px);
+  background: linear-gradient(180deg, #e6c869, var(--cmd-gold));
 }
 .cmd-main .btn.ghost {
-  background: transparent;
+  background: rgba(7,21,40,.45);
   color: var(--cmd-ink);
-  border: 1px solid var(--cmd-line);
+  border-color: var(--cmd-line);
 }
 .cmd-main .btn.ghost:hover {
-  border-color: var(--cmd-gold);
+  border-color: rgba(212,175,55,.8);
   color: var(--cmd-gold);
+}
+.cmd-main .btn[disabled] {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ---- Wizard / registration polish -------------------------------------- */
+.wizard-steps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.wizard-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--cmd-line);
+  background: rgba(7,21,40,.5);
+  color: var(--cmd-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  transition: all .15s ease;
+}
+.wizard-step span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(212,175,55,.12);
+  color: var(--cmd-gold);
+  border: 1px solid rgba(212,175,55,.35);
+  font-size: 11px;
+}
+.wizard-step.active {
+  background: rgba(212,175,55,.12);
+  border-color: rgba(212,175,55,.55);
+  color: var(--cmd-ink);
+  box-shadow: 0 0 0 1px rgba(212,175,55,.16);
+}
+.wizard-step.done {
+  background: rgba(74,222,128,.08);
+  border-color: rgba(74,222,128,.36);
+  color: #dfffe9;
+}
+.wizard-panel {
+  display: none;
+  margin-top: 18px;
+}
+.wizard-panel.active {
+  display: block;
+}
+.wizard-panel-title {
+  margin: 0 0 14px;
+  color: var(--cmd-ink);
+  font-size: 14px;
+  letter-spacing: .25px;
+}
+.wizard-hint {
+  margin: 0 0 12px;
+  color: var(--cmd-muted);
+  font-size: 12.5px;
+}
+.wizard-choices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.wiz-choice {
+  appearance: none;
+  border: 1px solid var(--cmd-line);
+  background: linear-gradient(180deg, rgba(12,31,52,.9), rgba(9,22,39,.8));
+  border-radius: 12px;
+  padding: 14px 16px;
+  text-align: left;
+  color: var(--cmd-ink);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 86px;
+  cursor: pointer;
+  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.wiz-choice:hover {
+  transform: translateY(-1px);
+  border-color: rgba(212,175,55,.7);
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+}
+.wiz-choice.selected {
+  background: linear-gradient(180deg, rgba(212,175,55,.16), rgba(16,39,66,.9));
+  border-color: rgba(212,175,55,.85);
+  box-shadow: 0 0 0 2px rgba(212,175,55,.12);
+}
+.wiz-choice-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--cmd-ink);
+}
+.wiz-choice-sub {
+  font-size: 11.5px;
+  color: var(--cmd-muted);
+  line-height: 1.45;
+}
+.wiz-choice-badge {
+  display: inline-block;
+  width: fit-content;
+  font-size: 10.5px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  background: rgba(212,175,55,.12);
+  color: var(--cmd-gold);
+  border: 1px solid rgba(212,175,55,.24);
 }
 
 /* ---- Result banner ----------------------------------------------------- */
