@@ -4,6 +4,7 @@ config.py — Central configuration for SAPS eDMS.
 
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -29,7 +30,7 @@ def _int(key, default):
 
 
 class Config:
-    ENV = _env("FLASK_ENV", "development")
+    ENV = _env("FLASK_ENV", "production")
     DEBUG = ENV == "development"
     SECRET_KEY = _env("FLASK_SECRET_KEY", "dev-secret-key-change-me")
 
@@ -37,6 +38,8 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES_HOURS = _int("JWT_EXPIRES_HOURS", 8)
 
     _db_url = _env("DATABASE_URL", "sqlite:///saps_edms.db")
+    if _db_url.startswith("postgres://"):
+        _db_url = _db_url.replace("postgres://", "postgresql://", 1)
     if _db_url.startswith("sqlite:///") and not _db_url.startswith("sqlite:////"):
         _db_file = _db_url.replace("sqlite:///", "", 1)
         SQLALCHEMY_DATABASE_URI = f"sqlite:///{(BASE_DIR / _db_file).as_posix()}"
