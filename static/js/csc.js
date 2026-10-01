@@ -232,6 +232,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const suspectEl = document.getElementById("cSuspects");
+    if (suspectEl && suspectEl.value !== "") {
+      const suspectCount = Number(suspectEl.value);
+      if (!Number.isInteger(suspectCount) || suspectCount < 0 || suspectCount > 20) {
+        SAPS.showResult(out, "Number of suspects must be between 0 and 20.", "err");
+        suspectEl.focus();
+        return;
+      }
+    }
+
     const grounds = reasonToGrounds(reasonEl.value);
     const body = {
       complainant_name:  document.getElementById("cName").value.trim(),

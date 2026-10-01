@@ -25,6 +25,7 @@ from flask_limiter.util import get_remote_address
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from sqlalchemy import or_, text
+from dotenv import load_dotenv
 
 from config import config
 from models import (
@@ -1012,6 +1013,10 @@ def create_case(user):
         try: return int(v) if v not in (None, "", "null") else None
         except (TypeError, ValueError): return None
 
+    suspect_count = _int_or_none(data.get("num_suspects"))
+    if suspect_count is not None and (suspect_count < 0 or suspect_count > 20):
+        return jsonify({"msg": "Number of suspects must be between 0 and 20."}), 400
+
     weapons = data.get("weapons_involved") or []
     if isinstance(weapons, list):
         weapons_str = ", ".join(str(w).strip() for w in weapons if str(w).strip())
@@ -1050,7 +1055,7 @@ def create_case(user):
         ground_court_order=g_court,
         sworn_statement_ref=(data.get("sworn_statement_ref") or "").strip() or None,
         financial_value=_float_or_none(data.get("financial_value")),
-        num_suspects=_int_or_none(data.get("num_suspects")),
+        num_suspects=suspect_count,
         weapons_involved=weapons_str or None,
         status="Open",
         verification_status="Unverified",

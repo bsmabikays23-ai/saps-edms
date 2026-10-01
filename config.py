@@ -37,7 +37,7 @@ class Config:
     JWT_SECRET_KEY = _env("SAPS_JWT_SECRET", "dev-jwt-secret-change-me")
     JWT_ACCESS_TOKEN_EXPIRES_HOURS = _int("JWT_EXPIRES_HOURS", 8)
 
-    _db_url = _env("DATABASE_URL", "sqlite:///saps_edms.db")
+    _db_url = os.environ.get("DATABASE_URL", "sqlite:///saps_edms.db")
     if _db_url.startswith("postgres://"):
         _db_url = _db_url.replace("postgres://", "postgresql://", 1)
     if _db_url.startswith("sqlite:///") and not _db_url.startswith("sqlite:////"):
@@ -51,9 +51,15 @@ class Config:
     MAIL_PORT = _int("MAIL_PORT", 587)
     MAIL_USE_TLS = _bool("MAIL_USE_TLS", True)
     MAIL_USE_SSL = _bool("MAIL_USE_SSL", False)
-    MAIL_USERNAME = _env("MAIL_USERNAME", "")
-    MAIL_PASSWORD = _env("MAIL_PASSWORD", "")
-    MAIL_DEFAULT_SENDER = _env("MAIL_DEFAULT_SENDER", "SAPS eDMS <no-reply@example.com>")
+    MAIL_USERNAME = (_env("MAIL_USERNAME", "") or "").strip()
+    MAIL_PASSWORD = (_env("MAIL_PASSWORD", "") or "").replace(" ", "").strip()
+    sent_from = (_env("MAIL_DEFAULT_SENDER", "") or "").strip()
+    if sent_from:
+        MAIL_DEFAULT_SENDER = sent_from
+    elif MAIL_USERNAME:
+        MAIL_DEFAULT_SENDER = f"SAPS eDMS <{MAIL_USERNAME}>"
+    else:
+        MAIL_DEFAULT_SENDER = "SAPS eDMS <no-reply@example.com>"
 
     UPLOAD_DIR = _env("UPLOAD_DIR", "uploads")
     MAX_UPLOAD_MB = _int("MAX_UPLOAD_MB", 25)

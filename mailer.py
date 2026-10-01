@@ -20,8 +20,11 @@ def init_mail(app):
 def send_email(to_address: str, subject: str, body: str):
     if not to_address:
         return {"ok": False, "error": "No recipient email address"}
+
+    sender = (mail.app.config.get("MAIL_DEFAULT_SENDER") or "SAPS eDMS <no-reply@example.com>") if mail.app else "SAPS eDMS <no-reply@example.com>"
+
     try:
-        msg = Message(subject=subject, recipients=[to_address], body=body)
+        msg = Message(subject=subject, recipients=[to_address], sender=sender, body=body)
         mail.send(msg)
         return {"ok": True}
     except Exception as e:
